@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfinityX | Smart A/L Student Companion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="gemini-svg.svg">
+</head>
+<body>
+
+    <!-- Firebase Libraries -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+<!-- ඔයාගේ script.js එක -->
+<script src="script.js"></script>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-infinity"><span>InfinityX</span></i>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html" class="active">Home</a>
+            <a href="player.html">Video Player</a>
+            <a href="todo.html">To-Do & Schedule</a>
+            <a href="analyzer.html">Marks Analyzer</a>
+            <a href="hours.html">Study Hours</a>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header>
+
+    <section class="hero">
+        <!-- Notification Banner -->
+        <div id="home-notification" style="display: none; background-color: #6A89A7; color: #384959; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 13px; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.2); align-items: center; gap: 10px;">
+            <i class="fa-solid fa-bell" style="color: #7b2cbf;"></i>
+            <span id="notification-text">New task added successfully!</span>
+        </div>
+
+        <span class="badge">Developed by InfinityX 🚀</span>
+        <h1>Conquer Your A/Ls <br><span>Without Distractions</span></h1>
+        <p>The ultimate smart learning companion built for A/L students. Eliminate YouTube ads, unorganized schedules, and track your study progress easily.</p>
+        
+        <div class="countdown-container">
+            <h3>A/L Exam Countdown (August 01, 2027):</h3>
+            <div class="countdown-timers" id="countdown">
+                <div><span id="days">00</span><small>Days</small></div>
+                <div><span id="hours">00</span><small>Hours</small></div>
+                <div><span id="mins">00</span><small>Mins</small></div>
+                <div><span id="secs">00</span><small>Secs</small></div>
+            </div>
+        </div>
+
+        <div class="modules-grid">
+            <a href="player.html" class="module-card">
+                <i class="fa-solid fa-video-slash"></i>
+                <h3>Ad-Free Video Player</h3>
+                <p>Watch YouTube lessons cleanly without recommendations.</p>
+            </a>
+            <a href="todo.html" class="module-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h3>To-Do & Schedule</h3>
+                <p>Organize daily tasks with date, time & check options.</p>
+            </a>
+            <a href="analyzer.html" class="module-card">
+                <i class="fa-solid fa-chart-line"></i>
+                <h3>Marks Analyzer</h3>
+                <p>Track separate subject performance charts easily.</p>
+            </a>
+            <a href="hours.html" class="module-card">
+                <i class="fa-solid fa-clock"></i>
+                <h3>Study Hours</h3>
+                <p>Log and analyze daily study hours graphically.</p>
+            </a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 InfinityX LMS | Designed & Developed by InfinityX for all A/L Streams.</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <nav class="nav-links"><header class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-infinity"><span>InfinityX</span></i>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="player.html">Video Player</a>
+            <a href="todo.html">To-Do & Schedule</a>
+            <a href="analyzer.html">Marks Analyzer</a>
+            <a href="hours.html">Study Hours</a>
+        </nav>
+        
+        <!-- මෙන්න මේ Notification Icon කොටස එකතු කරන්න -->
+        <div class="notification-container">
+            <div class="notification-icon" id="notif-icon">
+                <i class="fa-regular fa-bell"></i>
+                <span class="notification-badge" id="notif-badge" style="display: none;">0</span>
+            </div>
+            <div class="notification-dropdown" id="notif-dropdown">
+                <h4>Notifications</h4>
+                <ul class="notification-list" id="notif-list">
+                    <li style="text-align: center; color: #888;">No new notifications</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header></nav>
+
+
+    <script>// A/L Exam Date: August 01, 2027 00:00:00
+const targetDate = new Date("August 01, 2027 00:00:00").getTime();
+
+function updateCountdown() {
+    const now = new Date().getTime();
+    const difference = targetDate - now;
+
+    if (difference > 0) {
+        // කාලය ගණනය කිරීම
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const mins = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const secs = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // HTML එකට අගයන් එකතු කිරීම (ඉලක්කම් 2ක් ලෙස පෙනෙන සේ padding කර ඇත)
+        document.getElementById("days").innerText = String(days).padStart(2, '0');
+        document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+        document.getElementById("mins").innerText = String(mins).padStart(2, '0');
+        document.getElementById("secs").innerText = String(secs).padStart(2, '0');
+    } else {
+        // Countdown එක ඉවර වූ විට
+        document.getElementById("countdown").innerHTML = "<h3>Exam Started!</h3>";
+    }
+}
+
+// තත්පරයෙන් තත්පරය Countdown එක Update කිරීම
+setInterval(updateCountdown, 1000);
+
+// පේජ් එක Load වූ වහාම ප්‍රථමයෙන්ම Update කිරීම
+updateCountdown();</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

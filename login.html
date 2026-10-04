@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfinityX LMS - Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #384959, #1F2A34);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #BDDDFC;
+        }
+
+        .auth-container {
+            background: rgba(56, 73, 89, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid #6A89A7;
+            padding: 40px 30px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .auth-container h2 {
+            font-size: 26px;
+            margin-bottom: 22px;
+            color: #BDDDFC;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 13px;
+            color: #BDDDFC;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #6A89A7;
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #88BDF2;
+            box-shadow: 0 0 10px rgba(136, 189, 242, 0.3);
+        }
+
+        .error-msg {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid #e74c3c;
+            color: #ff8e8e;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #88BDF2;
+            color: #384959;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .auth-btn:hover {
+            background-color: #BDDDFC;
+            box-shadow: 0 0 15px rgba(189, 221, 252, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .toggle-box {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #BDDDFC;
+        }
+
+        .toggle-btn {
+            color: #88BDF2;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+
+        .toggle-btn:hover {
+            color: #BDDDFC;
+        }
+
+        /* Mobile Optimization */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 30px 20px;
+            }
+
+            .auth-container h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="auth-container">
+        <h2 id="form-title">InfinityX LMS</h2>
+        
+        <div class="error-msg" id="error-msg"></div>
+
+        <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="student@infinityx.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-group" id="confirm-password-group" style="display: none;">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" placeholder="••••••••">
+            </div>
+
+            <button type="submit" class="auth-btn" id="submit-btn">Login</button>
+        </form>
+
+        <div class="toggle-box">
+            <span id="toggle-text">Don't have an account?</span>
+            <span class="toggle-btn" id="toggle-btn" onclick="toggleAuthMode()">Sign Up</span>
+        </div>
+    </div>
+
+    <!-- Firebase SDK Compat v10.8.0 -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <!-- External JS Logic -->
+    <script src="script.js"></script>
+
+    <script>
+        let isSignUpMode = false;
+
+        function toggleAuthMode() {
+            isSignUpMode = !isSignUpMode;
+            const title = document.getElementById("form-title");
+            const submitBtn = document.getElementById("submit-btn");
+            const confirmGroup = document.getElementById("confirm-password-group");
+            const toggleText = document.getElementById("toggle-text");
+            const toggleBtn = document.getElementById("toggle-btn");
+            const errorMsg = document.getElementById("error-msg");
+
+            errorMsg.style.display = "none";
+
+            if (isSignUpMode) {
+                title.innerText = "Create Account";
+                submitBtn.innerText = "Sign Up";
+                confirmGroup.style.display = "block";
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = "Login";
+            } else {
+                title.innerText = "InfinityX LMS";
+                submitBtn.innerText = "Login";
+                confirmGroup.style.display = "none";
+                toggleText.innerText = "Don't have an account?";
+                toggleBtn.innerText = "Sign Up";
+            }
+        }
+
+        function handleAuthSubmit(e) {
+            e.preventDefault();
+            if (isSignUpMode) {
+                registerUser();
+            } else {
+                loginUser();
+            }
+        }
+    </script>
+</body>
+</html>

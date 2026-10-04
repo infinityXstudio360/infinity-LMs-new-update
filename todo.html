@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InfinityX | To-Do & Scheduler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-infinity"><span>InfinityX</span></i>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="player.html">Video Player</a>
+            <a href="todo.html" class="active">To-Do & Schedule</a>
+            <a href="analyzer.html">Marks Analyzer</a>
+            <a href="hours.html">Study Hours</a>
+        </nav>
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header>
+
+    <section class="page-section">
+        <h2 class="section-title">Study To-Do & Time Scheduler</h2>
+        <div class="tool-card">
+            <div class="input-group" style="flex-direction: column; gap: 10px;">
+                <input type="text" id="todo-topic" placeholder="Task Topic (e.g., Physics Past Paper)">
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <input type="date" id="todo-date" style="flex: 1; padding: 10px; border-radius: 8px; background: #273440; color: #BDDDFC; border: 1px solid #384959;">
+                    <input type="text" id="todo-time" placeholder="Time (e.g., 3:00 PM - 5:00 PM)" style="flex: 1; padding: 10px; border-radius: 8px; background: #273440; color: #BDDDFC; border: 1px solid #384959;">
+                </div>
+                <textarea id="todo-details" placeholder="Write task details here..." style="width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #384959; outline: none; background-color: #273440; color: #BDDDFC; font-size: 14px; min-height: 70px;"></textarea>
+                <button id="add-todo-btn" class="action-btn" style="align-self: flex-end;">Add Task</button>
+            </div>
+            <ul id="todo-list" class="task-list" style="margin-top: 20px;">
+                <!-- Tasks will appear here -->
+            </ul>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 InfinityX LMS | Designed & Developed by InfinityX for all A/L Streams.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <nav class="nav-links"><header class="navbar">
+        <a href="index.html" class="logo">
+            <i class="fa-solid fa-infinity"><span>InfinityX</span></i>
+        </a>
+        <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="player.html">Video Player</a>
+            <a href="todo.html">To-Do & Schedule</a>
+            <a href="analyzer.html">Marks Analyzer</a>
+            <a href="hours.html">Study Hours</a>
+        </nav>
+        
+        <!-- මෙන්න මේ Notification Icon කොටස එකතු කරන්න -->
+        <div class="notification-container">
+            <div class="notification-icon" id="notif-icon">
+                <i class="fa-regular fa-bell"></i>
+                <span class="notification-badge" id="notif-badge" style="display: none;">0</span>
+            </div>
+            <div class="notification-dropdown" id="notif-dropdown">
+                <h4>Notifications</h4>
+                <ul class="notification-list" id="notif-list">
+                    <li style="text-align: center; color: #888;">No new notifications</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="menu-toggle" id="mobile-menu">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+    </header></nav>
+</body>
+</html>
